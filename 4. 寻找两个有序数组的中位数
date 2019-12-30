@@ -17,7 +17,7 @@
 
 //则中位数是 (2 + 3)/2 = 2.5
 
-
+//方法一：先合并再排序，然后从两头同时向中间移动指针
 class Solution {
 public:
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
@@ -43,3 +43,42 @@ public:
     }
 };
 
+//优化（不算优化的优化），也是先合并，算出中位数的位置
+class Solution {
+public:
+    double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+        vector <int >   numsSum;
+        int i=0;   
+        int j=0;
+        while(i<nums1.size()&&j<nums2.size()){
+            if(nums1[i]<=nums2[j]){
+                numsSum.push_back(nums1[i]);
+                i++;
+            }else{
+                numsSum.push_back(nums2[j]);
+                j++;
+            }
+        }
+        while (i<nums1.size()){
+            numsSum.push_back(nums1[i]);
+            i++;
+        }
+        while (j<nums2.size()){
+            numsSum.push_back(nums2[j]);
+            j++;
+        }
+        int numssize=numsSum.size();
+        double  b=0;
+        if(numssize%2==1){
+              b=numsSum[(numssize-1)/2];
+             
+        }else{
+           
+             b=(numsSum[(numssize)/2]+numsSum[(numssize-2)/2])/2.0;
+
+
+       
+        }
+        return b;
+    }
+};
