@@ -2,10 +2,10 @@
 
 //说明：你不能倾斜容器，且 n 的值至少为 2。
 
-
-
 //图中垂直线代表输入数组 [1,8,6,2,5,4,8,3,7]。在此情况下，容器能够容纳水（表示为蓝色部分）的最大值为 49。
 
+
+//方法一：暴力解法，尝试每一种组合，留下储水量最大的一组，作为返回值
 class Solution {
 public:
     int maxArea(vector<int>& height) {
@@ -16,6 +16,27 @@ public:
                 MAX=max((j-i)*min(height[i],height[j]),MAX);
             }
         }
+       return MAX; 
+    }
+};
+
+
+
+//改进方法2：在方法一的基础上，用前后两个指针缩小范围，使时间复杂度降低到O(n)
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        int end=height.size()-1; //后面的指针
+        int MAX=0;     //存储当前最大需水量
+        int begin=0;   //前面的指针
+        while(begin<=end){
+            MAX=max((end-begin)*min(height[begin],height[end]),MAX);
+            if(height[begin]<height[end]){   //移动指针，使范围变小
+                begin++;
+            }else{
+                end--;
+            }
+        } 
        return MAX; 
     }
 };
