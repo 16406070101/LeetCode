@@ -55,4 +55,55 @@ public:
         }
         return a;
     }
+}; 
+
+
+
+
+//review
+//双指针缩小范围
+class Solution {
+public:
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        vector<vector<int >>  a;
+        int size=nums.size();
+        sort(nums.begin(),nums.end());
+        for(int i=0;i<size-3;i++){
+            for (int j=i+1;j<size-2;j++){
+                int begin=j+1;     //双指针的首指针
+                int end=size-1;    //双指针的尾指针，通过两个指针来代替暴力法中的两个循环，有效的缩小范围，查找范围
+                while(begin<end){    
+                    int sum=nums[i]+nums[j]+nums[begin]+nums[end];
+                    if(sum==target){
+                        a.push_back({nums[i],nums[j],nums[begin],nums[end]});//满足条件时，保存答案。
+                        while((end-1)>0&&nums[end]==nums[end-1]){            //一下两步都是为了去重
+                            end--;
+                        }  
+                        while((begin+1)<size&&nums[begin]==nums[begin+1]){
+                            begin++;
+                        } 
+                        begin++;
+                        end--;
+                    }else if(sum>target){
+//                       while((end-1)>0&&nums[end]==nums[end-1]){
+//                           end--;
+//                        }    
+                        end--;
+                    }else{
+//                        while((begin+1)<size&&nums[begin]==nums[begin+1]){
+//                            begin++;
+//                        }    
+                        begin++;
+                    }
+                }
+                while((j+1)<size&&nums[j]==nums[j+1]){  //去重
+                    j++;
+                }
+            }
+            while((i+1)<size&&nums[i]==nums[i+1]){      //去重
+                    i++;
+            }
+        }
+        return a;
+    }
 };
