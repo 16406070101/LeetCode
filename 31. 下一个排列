@@ -21,3 +21,56 @@ public:
         next_permutation(nums.begin(),nums.end());
     }
 };
+
+
+方法二：
+
+void reverse(vector<int>& nums,int begin, int end){  //进行数组的翻转
+    while(begin<end){
+        int temp=nums[begin];
+        nums[begin]=nums[end];
+        nums[end]=temp;
+        begin++;
+        end--;
+    }
+    return ;
+}
+
+int minIndex(vector<int> nums,int begin,int end,int i ){  //从右边的有序数列中找出比i为下标大的最小数
+    int min=nums[begin];
+    int x=i;
+    for (int j=begin;j<=end;j++ ){
+        if(min>=nums[j]&&nums[j]>nums[i]){
+            min=nums[j];
+            x=j;
+        }
+    }
+    return x;
+}
+
+class Solution {
+public:
+    void nextPermutation(vector<int>& nums) {
+        if(nums.size()==0||nums.size()==1){ //当数组的大小为0或1的时候，数组进行翻转
+            return ;
+        }
+        int size=nums.size();
+        int i=0;
+        for (i=size-2;i>=0;i--){   //从后往前找第一个不是升序的数   找到索引i
+            if(nums[i]<nums[i+1]){
+                break;
+            }
+        }
+        if(i==-1){                 //当从后往前都是升序时，进行翻转
+            reverse(nums,0,size-1);
+            return ;
+        }else{
+            int min=minIndex(nums,i+1,size-1,i);  //当从前往后不是全是升序时，从右边的有序数列中找出比i为下标大的最小数索引min,
+            int temp=nums[i];   //交换位置i,与位置min上的元素
+            nums[i]=nums[min];
+            nums[min]=temp;
+            sort(nums.begin()+i+1, nums.end());//将i右面的元素进行有序排列。
+            return ;
+        }
+    }
+};
