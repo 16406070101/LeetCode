@@ -63,40 +63,42 @@ public:
 class Solution {
 public:
     bool isMatch(string s,string p){
-	    bool dp[s.length()+1][p.length()+1]; //dp[i][j] 表示 s 的前 i 个是否能被 p 的前 j 个匹配  
+        int row=s.length()+1;
+        int col=p.length()+1;
+        bool dp[row][col]; //dp[i][j] 表示 s 的前 i 个是否能被 p 的前 j 个匹配  
 	    dp[0][0]=true;                       //s的前零个可以与p的前零个进行匹配
-	    for(int i=0;i<p.length();i++){
-		    if(p[i]=='*' && dp[0][i-1]){
-			    dp[0][i+1]=true; 
+	    for(int i=1;i<col;i++){
+		    if(p[i-1]=='*' && dp[0][i-2]){  //当p的第i个元素为‘*’时且s的前0个元素与p的前i-2个元素相匹配时，可以到s的前零个可以与p的前i个进行匹配,否则不进行匹配,(因为这里的*一定匹配的是零个字符)
+			    dp[0][i]=true; 
 		    }else{
-			    dp[0][i+1]=false;
+			    dp[0][i]=false;
 		    }
 	    }
-	    if(s.length()>=1){
-		    for(int i=1;i<s.length()+1;i++){
+	    if(row-1>=1){
+		    for(int i=1;i<row;i++){//dp[i][0]表示s的前i个不能被p的前0个匹配
 			    dp[i][0]=false;
 		    }
 	    }
-	    for(int i=0;i<s.length();i++){
-		    for(int j=0;j<p.length();j++){
-			    if(s[i]==p[j] || p[j]=='.'){
-				    dp[i+1][j+1]=dp[i][j];
-			    }else if(p[j]=='*'){
-				    if(p[j-1]!=s[i] && p[j-1]!='.'){
-					    dp[i+1][j+1]=dp[i+1][j-1];
+	    for(int i=1;i<row;i++){
+		    for(int j=1;j<col;j++){
+			    if(s[i-1]==p[j-1] || p[j-1]=='.'){
+				    dp[i][j]=dp[i-1][j-1];
+			    }else if(p[j-1]=='*'){
+				    if(p[j-2]!=s[i-1] && p[j-2]!='.'){
+					    dp[i][j]=dp[i][j-2];
 				    }else{
-					    if(dp[i][j+1] || dp[i+1][j] || dp[i+1][j-1]) {
-						    dp[i+1][j+1]=true;
+					    if(dp[i-1][j] || dp[i][j-1] || dp[i][j-2]) {
+						    dp[i][j]=true;
 					    }else{
-						    dp[i+1][j+1]=false;
+						    dp[i][j]=false;
 					    }
 				    }
 			    }
 			    else{
-				    dp[i+1][j+1]=false;
+				    dp[i][j]=false;
 			    }
 		    }
 	    }
-	    return dp[s.length()][p.length()];
+	    return dp[row-1][col-1];
     }
 };
