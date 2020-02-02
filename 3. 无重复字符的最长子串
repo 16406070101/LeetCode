@@ -47,7 +47,7 @@ public:
 class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
-        bool size[95]={0};  //起到哈希的作用存放滑动窗口里某个元素有多少个
+        bool size[95]={0};  //起到哈希的作用存放滑动窗口里某个元素有多少个，32～126(共95个)是字符(32是空格），其中48～57为0到9十个阿拉伯数字。
         int i=0;   //前面的指针
         int j=0;   //后面的指针
         int Max=0;
