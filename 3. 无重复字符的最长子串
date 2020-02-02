@@ -17,6 +17,9 @@
 链接：https://leetcode-cn.com/problems/longest-substring-without-repeating-characters
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 
+
+
+//滑动窗口。这时满足条件的字符串就在下i到下标J之间
 class Solution {
 public:
     int lengthOfLongestSubstring(string s) {
@@ -36,3 +39,40 @@ public:
         return Max;
     }
 };
+
+
+
+
+//双指针构成一个滑动窗口,并构造哈希表进行优化
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        bool size[95]={0};  //起到哈希的作用存放滑动窗口里某个元素有多少个
+        int i=0;   //前面的指针
+        int j=0;   //后面的指针
+        int Max=0;
+        if(s.length()<2){  //当字符串长度小于2时，不会有重复，直接返回字符串的长度就可以啦
+            return s.length();
+        }
+        while(j<s.length()){   
+            if(size[s[j]-' ']==0){    //当第j个元素还没有在滑动窗口中时
+                size[s[j]-' ']=1;     //把下标为j 的这个元素归到滑动窗口中,标记为1，表示存在
+                Max=max(j-i+1,Max);   //记录这个时候的长度
+                j++;                  //把下标为j 的这个元素归到滑动窗口中
+            }else{                    //当第j个元素已经存在在窗口里时
+                while( i<j){          //将i向后移动直到把这个重复的元素剔除出去
+                    if(s[i]==s[j]){   
+                        i++;
+                        j++;
+                        break;
+                    }
+                    size[s[i]-' ']=0;    
+                    i++;
+                }
+            }
+        }
+        return Max;
+        
+    }
+};
+
