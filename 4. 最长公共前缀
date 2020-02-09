@@ -1,0 +1,56 @@
+编写一个函数来查找字符串数组中的最长公共前缀。
+
+如果不存在公共前缀，返回空字符串 ""。
+
+示例 1:
+
+输入: ["flower","flow","flight"]
+输出: "fl"
+示例 2:
+
+输入: ["dog","racecar","car"]
+输出: ""
+解释: 输入不存在公共前缀。
+说明:
+
+所有输入只包含小写字母 a-z 。
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/longest-common-prefix
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+
+
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        int size=strs.size(); 
+        string  str="";  //存储结果
+        
+        if(size==0){  //当没有字符串时，可以直接返回
+            return str;
+        }
+        if(size==1){  //当只有一个字符串时，可以直接返回这一个字符串
+            return strs[0];
+        }
+        int minLen=strs[0].length();
+        for(int i=0;i<size;i++){    //找出最短的字符串的长度，因为最长前缀肯定小于等于这个长度
+           if(minLen>strs[i].length()){
+               minLen=strs[i].length();
+           }
+        }
+        if(minLen==0){   //当最小字符串为空时，直接返回空的字符串
+            return str;
+        }
+        for(int i=0;i<minLen;i++){  //每一个字符串的同一个索引开始于第一个字符串的这个索引开始比较
+            for(int j=1;j<size;j++){   
+                if(strs[j][i]!=strs[0][i]){  //如果不同，经不用再比下去直接返回。
+                    return str;
+                }
+            }
+            str=str+strs[0][i];     //如果全部相同，则这个前缀就包含这个字符
+        }
+        return str;
+        
+    }
+};
