@@ -13,6 +13,8 @@
 链接：https://leetcode-cn.com/problems/unique-binary-search-trees
 著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
 
+
+
 class Solution {
 public:
     int numTrees(int n) {
@@ -23,8 +25,8 @@ public:
         dp[0]=1;
         dp[1]=1;
         for(int i=2;i<=n;i++){
-            for(int j=0;j<i;j++){
-                dp[i]+=dp[j]*dp[i-j-1];
+            for(int j=1;j<=i;j++){//分别以第J个数为树顶,dp[j-1]表示左子树的个数，dp[i-j]为右面右子树的个数
+                dp[i]+=dp[j-1]*dp[i-j];
             }
         }
          
