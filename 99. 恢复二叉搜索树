@@ -1,0 +1,78 @@
+二叉搜索树中的两个节点被错误地交换。
+
+请在不改变其结构的情况下，恢复这棵树。
+
+示例 1:
+
+输入: [1,3,null,null,2]
+
+   1
+  /
+ 3
+  \
+   2
+
+输出: [3,1,null,null,2]
+
+   3
+  /
+ 1
+  \
+   2
+示例 2:
+
+输入: [3,1,4,null,null,2]
+
+  3
+ / \
+1   4
+   /
+  2
+
+输出: [2,1,4,null,null,3]
+
+  2
+ / \
+1   4
+   /
+  3
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/recover-binary-search-tree
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    void recoverTree(TreeNode* root) {
+        vector<TreeNode*>   arr;//存储中序遍历的结果
+        recoverTrees(root,arr);  //进行中序遍历
+        for(int i=arr.size()-1;i>=0;i--){  //对中序遍历之后的Vector进行修改，改变成对的样子，即恢复成本应该的升序排列，下边我用的是冒泡排序，当然还可以进行排序方面的优化
+            for(int j=0;j<i;j++){
+                if(arr[j]->val>arr[j+1]->val){
+                    int  temp=arr[j]->val;
+                    arr[j]->val=arr[j+1]->val;
+                    arr[j+1]->val=temp;
+                }
+            }
+        }
+    }
+    void recoverTrees(TreeNode* root,vector<TreeNode*>&  arr){
+        if(root==NULL){
+            return ;
+        }
+        recoverTrees(root->left,arr);
+        arr.push_back(root);
+        recoverTrees(root->right,arr);
+    }
+};
+
