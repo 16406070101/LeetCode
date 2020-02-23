@@ -67,3 +67,50 @@ public:
 
     }
 };
+
+
+//后来看评论区有大佬用双栈法来做，感觉还是很不错的，所以来记录一下
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+        vector<vector<int>> res;
+        if(root==nullptr) return res;
+        stack<TreeNode*> sk1;
+        stack<TreeNode*> sk2;
+        sk1.push(root);
+        while(!sk1.empty()||!sk2.empty()){
+            vector<int> vec;
+            if(!sk1.empty()){
+                while(!sk1.empty()){
+                    TreeNode* tmp = sk1.top();
+                    sk1.pop();
+                    vec.push_back(tmp->val);
+                    if(tmp->left) sk2.push(tmp->left);
+                    if(tmp->right) sk2.push(tmp->right);
+                }    
+            }
+        
+            else if(!sk2.empty()){
+                while(!sk2.empty()){
+                    TreeNode* tmp = sk2.top();
+                    sk2.pop();
+                    vec.push_back(tmp->val);
+                    if(tmp->right) sk1.push(tmp->right);
+                    if(tmp->left) sk1.push(tmp->left);  
+                }
+            }
+            res.push_back(vec);
+        }
+        return res;
+    }
+};
