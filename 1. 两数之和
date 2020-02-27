@@ -19,3 +19,23 @@ public:
         return a;
     }
 };
+
+
+
+
+
+//用map来做
+//用count函数来判定关键字是否出现，其缺点是无法定位数据出现位置,由于map的特性，一对一的映射关系，就决定了count函数的返回值只有两个，要么是0，要么是1，出现的情况，当然是返回1了
+
+
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& nums, int target) {
+        map<int, int> hash;
+        for(int i = 0; i < nums.size(); i++){
+        	if(hash.count(target - nums[i])) return {hash[target - nums[i]], i};
+        	hash[nums[i]] = i;
+		}
+		return {-1, -1};
+    }
+};
