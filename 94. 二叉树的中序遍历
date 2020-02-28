@@ -42,3 +42,44 @@ public:
         inorderTraversal(root->right,arr);//遍历右子树
     }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+//非递归
+
+class Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        // 二叉树遍历，我们只用非递归
+        // 1. 栈后法。即先入栈，再访问。
+        // 2. 中序遍历，左臂入栈法。（前序遍历，栈后法+右左孩子入栈法。后序遍历？有点难哦！）
+        vector<int> ans;
+        stack<TreeNode*> st;
+        while(root) {
+            st.push(root);
+            root = root->left;
+        }
+        
+        while(!st.empty()) {
+            TreeNode* node = st.top();
+            st.pop();
+            ans.push_back(node->val);
+            // 每 pop 一个节点，将其右子树做**左臂入栈**操作。
+            node = node->right;
+            while (node) {
+                st.push(node);
+                node = node->left;
+            }  
+        }
+        return ans;
+    }
+};
