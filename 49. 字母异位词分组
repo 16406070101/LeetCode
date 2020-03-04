@@ -1,0 +1,45 @@
+给定一个字符串数组，将字母异位词组合在一起。字母异位词指字母相同，但排列不同的字符串。
+
+示例:
+
+输入: ["eat", "tea", "tan", "ate", "nat", "bat"],
+输出:
+[
+  ["ate","eat","tea"],
+  ["nat","tan"],
+  ["bat"]
+]
+说明：
+
+所有输入均为小写字母。
+不考虑答案输出的顺序。
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/group-anagrams
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+
+
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        map<string ,vector<string>>   anagram;//内部进行排序的各个单词为Key，以字符串向量为value ,存储各个字符数量相同的字符串
+        vector<vector<string>>  result; //存储最终结果
+        for(int i=0;i<strs.size();i++){//遍历每个单词
+            string str=strs[i];
+            sort(str.begin(),str.end());//对str内部进行排序
+            if(anagram.find(str)==anagram.end()){//如果没法在hash表中找到str
+                std::vector<string >  item;
+                anagram[str]=item;//以排序后的strs[i]作为key
+                
+            }
+            anagram[str].push_back(strs[i]);//在对应的字符串向量中push结果
+        }
+        map<string ,vector<string>>::iterator  it;
+        for(it=anagram.begin();it!=anagram.end();it++){
+            result.push_back((*it).second);
+        }
+        return result;
+        
+        
+    }
+};
