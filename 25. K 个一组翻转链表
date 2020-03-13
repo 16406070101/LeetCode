@@ -1,0 +1,77 @@
+给你一个链表，每 k 个节点一组进行翻转，请你返回翻转后的链表。
+
+k 是一个正整数，它的值小于或等于链表的长度。
+
+如果节点总数不是 k 的整数倍，那么请将最后剩余的节点保持原有顺序。
+
+ 
+
+示例：
+
+给你这个链表：1->2->3->4->5
+
+当 k = 2 时，应当返回: 2->1->4->3->5
+
+当 k = 3 时，应当返回: 3->2->1->4->5
+
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/reverse-nodes-in-k-group
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<ListNode *> reverse(ListNode * head,int k){
+        ListNode * newhead=NULL;
+        vector<ListNode *> res; 
+        res.push_back(head);    //存储逆序过后的这段链表尾结点
+        int i=0;                
+        ListNode * head1=head;
+        while(head1){          //记录长度判断是否需要逆序
+            i++;
+            head1=head1->next;
+            if(i==k){
+                break;
+            }
+        }
+        if(i<k){                //当长度比K短时，不用逆置，直接返回剩下链表的头结点
+            return res;
+        }
+        while(k){
+            ListNode* nexthead=head->next;
+            head->next=newhead;
+            newhead=head;
+            head=nexthead;
+            k--;
+        }
+        res.push_back(newhead);//存储逆序过的头结点
+        res.push_back(head);//存储下一段需要逆序的开头
+        return res;
+    }
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        ListNode * newhead=new ListNode(0); //这个头结点用于统一操作
+        ListNode * tmp=newhead;
+        while(head){
+            vector<ListNode* > res=reverse(head,k);//进行逆序
+            if(res.size()==3){              //把逆序后的链表链接进去（一种情况是结点个数够，需要逆置，另一种情况是，结点个数不够不用逆置）
+                tmp->next=res[1];
+                tmp=res[0];
+                head=res[2];
+
+            }else{
+                tmp->next=res[0];
+                head=NULL;
+            }
+        }
+        return newhead->next;
+
+
+    }
+};
+
