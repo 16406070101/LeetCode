@@ -45,3 +45,39 @@ public:
         
     }
 };
+//上面那个只是提供了一种解决问题的思路，但是，其实并不可以使这个题通过，😂，下面用两条链表，一条存储大与等于x，一条存储小于x,最后将两条链表合并起来。
+看了一下复杂度还是可以的，空间利用率可以到100%。
+
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* partition(ListNode* head, int x) {
+        ListNode * maxhead=new ListNode(0);  //
+        ListNode * maxtmp=maxhead;
+        ListNode * minhead=new ListNode(0);
+        ListNode * mintmp=minhead;
+        while(head){
+            if(head->val<x){
+                mintmp->next=head;
+                mintmp=head;
+            }else{
+                maxtmp->next=head;
+                maxtmp=head;
+            }
+            head=head->next;
+        }
+        maxtmp->next=NULL;
+
+        mintmp->next=maxhead->next;
+        return minhead->next;
+        
+    }
+};
